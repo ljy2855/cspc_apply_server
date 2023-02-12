@@ -17,7 +17,7 @@ class Recruitment(models.Model):
     interview_end_time = models.DateField()
     announce_time = models.DateField()
     
-class InterViewTime(models.Model):
+class InterviewTime(models.Model):
     time = models.DateTimeField()
     is_fixed = models.BooleanField(default=False)
 
@@ -32,7 +32,7 @@ class Resume(models.Model):
     to_do = models.TextField(default='')
     etc = models.TextField(default='')
 
-    interview_time_choice = models.ManyToManyField(InterViewTime,related_name="interview_time")
+    interview_time_choice = models.ManyToManyField(InterviewTime,related_name="interview_time")
     interview_requirement = models.TextField(default='')
 
 
