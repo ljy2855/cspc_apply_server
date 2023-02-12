@@ -1,8 +1,10 @@
 from rest_framework.decorators import api_view
 from django.shortcuts import get_object_or_404
-from models import Applicant
+from user.models import Applicant , LabMaster
 from rest_framework.response import Response
 from django.core.exceptions import ObjectDoesNotExist
+
+from user.serializers import LabMasterSerializer
 
 @api_view(['POST'])
 def check_applicant(request):
@@ -30,4 +32,9 @@ def check_applicant(request):
             Applicant.objects.create(name=name,password=password)
             return Response(status=200)
 
+@api_view(['GET'])
+def get_master_info(request):
+    master =  get_object_or_404(LabMaster,is_active = True)
+    master_serializer = LabMasterSerializer(master)
+    return Response(master_serializer.data,status=200)
 # Create your views here.
