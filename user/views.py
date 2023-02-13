@@ -4,8 +4,11 @@ from user.models import Applicant , LabMaster
 from rest_framework.response import Response
 from django.core.exceptions import ObjectDoesNotExist
 
-from user.serializers import LabMasterSerializer
+from user.serializers import LabMasterSerializer, ApplicantSerializer
+from drf_yasg.utils import swagger_auto_schema
 
+
+@swagger_auto_schema(request_body=ApplicantSerializer, method='post', responses={200 : None,201 : None,404 : None,500 :None})
 @api_view(['POST'])
 def check_applicant(request):
     try:
@@ -32,6 +35,8 @@ def check_applicant(request):
             Applicant.objects.create(name=name,password=password)
             return Response(status=200)
 
+
+@swagger_auto_schema(responses={200 : LabMasterSerializer()}, method='get')
 @api_view(['GET'])
 def get_master_info(request):
     master =  get_object_or_404(LabMaster,is_active = True)
