@@ -16,10 +16,15 @@ class Recruitment(models.Model):
     interview_start_time = models.DateField()
     interview_end_time = models.DateField()
     announce_time = models.DateField()
+    is_document_announe = models.BooleanField(default=False)
+    is_final_announce = models.BooleanField(default=False)
     
 class InterviewTime(models.Model):
     time = models.DateTimeField()
     is_fixed = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.time.strftime("%Y/%m/%d %H:%M:%S")
 
 class Resume(models.Model):
     applicant = models.OneToOneField(Applicant,on_delete=models.CASCADE)
@@ -34,6 +39,9 @@ class Resume(models.Model):
 
     interview_time_choice = models.ManyToManyField(InterviewTime,related_name="interview_time")
     interview_requirement = models.TextField(default='')
+
+    def __str__(self):
+        return self.applicant.name
 
 
 
