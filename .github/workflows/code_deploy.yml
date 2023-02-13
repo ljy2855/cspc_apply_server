@@ -32,5 +32,5 @@ jobs:
           script: |
             cd ${{secrets.PATH}}
             docker-compose down
-            git pull origin release
+            git pull origin dev
             docker-compose up --build -d
