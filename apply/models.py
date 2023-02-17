@@ -40,7 +40,8 @@ class Resume(models.Model):
     interview_time_choice = models.ManyToManyField(InterviewTime,related_name="interview_time")
     fixed_interview_time = models.OneToOneField(InterviewTime,on_delete=models.CASCADE,null=True,blank=True)
     interview_requirement = models.TextField(default='')
-
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     
 
     def __str__(self):

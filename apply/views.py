@@ -58,3 +58,9 @@ class ResumeAPI(APIView):
             return Response(serializer.errors,status=400) #지원서 수정하는데 잘못 save되면 응답 & status #
     
 
+@swagger_auto_schema(method="get", responses=get_interview_response)
+@api_view(['GET'])
+def get_interview_time_list(reqeust):
+    times = InterviewTime.objects.all()
+    serializer = InterviewtimeSerializer(times,many=True)
+    return Response(serializer.data,status=200)
