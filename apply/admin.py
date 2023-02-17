@@ -29,7 +29,7 @@ def set_interview_time(self, request, queryset):
 
 @admin.register(Resume)
 class ResumeAdmin(admin.ModelAdmin):
-    list_display = ('applicant', 'student_id', 'semester',
+    list_display = ('applicant', 'name', 'semester',
                     'phone', 'fixed_interview_time')
     actions=[get_all_resume]
 

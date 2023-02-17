@@ -12,3 +12,7 @@ get_master_info_response = openapi.Responses(responses={200: LabMasterSerializer
 get_recuit_session_response = openapi.Responses(
     responses={200: RecruitSerializer(), 404 : "Not found"}
 )
+
+get_resume_response = openapi.Responses(
+    responses={200: ResumeSerializer(), 400: "Error"}
+)

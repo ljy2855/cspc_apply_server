@@ -10,4 +10,4 @@ class LabMasterSerializer(serializers.ModelSerializer):
 class ApplicantSerializer(serializers.ModelSerializer):
     class Meta:
         model = Applicant
-        fields = ('name','password')
+        fields = ('student_id','password')

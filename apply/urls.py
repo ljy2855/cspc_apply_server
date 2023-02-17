@@ -4,4 +4,5 @@ from apply.views import *
 
 urlpatterns = [
     path('recruit',get_recuit_session),
+    path('resume', ResumeAPI.as_view()),
 ]

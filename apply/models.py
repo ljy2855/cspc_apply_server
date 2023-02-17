@@ -29,7 +29,7 @@ class InterviewTime(models.Model):
 class Resume(models.Model):
     applicant = models.OneToOneField(Applicant,on_delete=models.CASCADE)
     phone = models.CharField(max_length=20)
-    student_id = models.PositiveSmallIntegerField()
+    name = models.CharField(max_length=20)
     semester = models.PositiveSmallIntegerField()
     #지원서 답변
     introduce = models.TextField(default='')
@@ -38,13 +38,13 @@ class Resume(models.Model):
     etc = models.TextField(default='')
 
     interview_time_choice = models.ManyToManyField(InterviewTime,related_name="interview_time")
-    fixed_interview_time = models.OneToOneField(InterviewTime,on_delete=models.CASCADE,null=True)
+    fixed_interview_time = models.OneToOneField(InterviewTime,on_delete=models.CASCADE,null=True,blank=True)
     interview_requirement = models.TextField(default='')
 
     
 
     def __str__(self):
-        return self.applicant.name
+        return self.name
 
 
 
