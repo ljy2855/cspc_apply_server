@@ -38,7 +38,10 @@ class Resume(models.Model):
     etc = models.TextField(default='')
 
     interview_time_choice = models.ManyToManyField(InterviewTime,related_name="interview_time")
+    fixed_interview_time = models.OneToOneField(InterviewTime,on_delete=models.CASCADE,null=True)
     interview_requirement = models.TextField(default='')
+
+    
 
     def __str__(self):
         return self.applicant.name
