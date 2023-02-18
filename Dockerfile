@@ -14,12 +14,13 @@ ENV PYTHONUNBUFFERED 1
 COPY ./requirements.txt $APP_HOME/requirements.txt
 
 RUN pip install --no-cache-dir --upgrade -r $APP_HOME/requirements.txt
-
-
+RUN apt-get update && apt-get install -y netcat
+RUN pip install --no-cache-dir --upgrade  Psycopg2
 
 COPY . $APP_HOME
 
-RUN python manage.py makemigrations
+RUN sed -i 's/\r$//g' $APP_HOME/entrypoint.sh
 
-RUN python manage.py migrate --no-input
-RUN python manage.py collectstatic --no-input
+RUN chmod +x $APP_HOME/entrypoint.sh 
+
+ENTRYPOINT [ "/home/app/web/entrypoint.sh" ]
