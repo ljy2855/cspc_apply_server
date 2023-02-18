@@ -17,6 +17,7 @@ from rest_framework.permissions import IsAuthenticated
 @api_view(['GET'])
 def get_recuit_session(request):
     session = get_object_or_404(Recruitment)
+    session.check_process()
     serializer = RecruitSerializer(session)
     return Response(serializer.data, status=200)
 
@@ -25,12 +26,11 @@ class ResumeAPI(APIView):
     permission_classes = [IsAuthenticated]
 
     def get_object(self,applicant):
-        try:
-            return Resume.objects.get(applicant=applicant)
-        except Resume.DoesNotExist:
-            return Http404
         
-    @swagger_auto_schema(responses=get_resume_response)
+        return get_object_or_404(Resume,applicant=applicant)
+       
+        
+    @swagger_auto_schema(responses=get_resume_response,authentication_classes=[BasicAuthentication])
     def get(self,request):
         resume = self.get_object(request.user)
         serializer = ResumeSerializer(resume)
@@ -38,8 +38,8 @@ class ResumeAPI(APIView):
     
     @swagger_auto_schema(request_body=ResumeSerializer,authentication_classes=[BasicAuthentication])
     def post(self,request):
-        resume = Resume(applicant=request.user)
-        serializer = ResumeSerializer(resume,data=request.data)
+        request.data['applicant'] = request.user.id
+        serializer = ResumeSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data,status=200)
@@ -48,9 +48,10 @@ class ResumeAPI(APIView):
 
 
     @swagger_auto_schema(request_body=ResumeSerializer,authentication_classes=[BasicAuthentication])
-    def put(self,request):
+    def patch(self,request):
         resume = self.get_object(request.user)
-        serializer = ResumeSerializer(resume,data=request.data)
+        serializer = ResumeSerializer(resume, data=request.data, partial=True)
+        #print(request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data,status=200)

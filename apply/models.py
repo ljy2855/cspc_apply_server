@@ -1,23 +1,38 @@
 from django.db import models
-
+from datetime import datetime
 from user.models import Applicant
 
 class TermType(models.TextChoices):
     SPRING = 'spring'
     FALL = 'fall'
 
+class RecruitProcess(models.TextChoices):
+   CLOSE = 'close'
+   APPLY = 'apply'
+   MIDDLE = 'middle'
+   FINAL = 'final'
 
 class Recruitment(models.Model):
     year = models.PositiveSmallIntegerField()
     term = models.CharField(max_length=10, choices=TermType.choices)
-    is_open = models.BooleanField()
     start_time = models.DateField()
     document_deadline = models.DateField()
+    announce_middle_time = models.DateTimeField()
     interview_start_time = models.DateField()
     interview_end_time = models.DateField()
-    announce_time = models.DateField()
-    is_document_announe = models.BooleanField(default=False)
-    is_final_announce = models.BooleanField(default=False)
+    announce_final_time = models.DateTimeField()
+    process = models.CharField(max_length=10, choices=RecruitProcess.choices ,default=RecruitProcess.CLOSE)
+
+    def check_process(self):
+        now = datetime.now()
+        if now > self.announce_final_time :
+            self.process = RecruitProcess.FINAL
+        elif now > self.announce_middle_time :
+            self.process = RecruitProcess.MIDDLE
+        elif now > self.start_time :
+            self.process = RecruitProcess.APPLY
+        else :
+            self.process = RecruitProcess.CLOSE
     
 class InterviewTime(models.Model):
     time = models.DateTimeField()
@@ -42,6 +57,9 @@ class Resume(models.Model):
     interview_requirement = models.TextField(default='')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    is_pass_document = models.BooleanField(default=True)
+    is_pass_final = models.BooleanField(default=False)
     
 
     def __str__(self):

@@ -25,10 +25,10 @@ def check_applicant(request):
                 return Response(status=500)
             # 새로운 지원자
             else:
-                Applicant.object.create_user(student_id=student_id,password=password)
-                return Response(status=200)
+                applicant = Applicant.object.create_user(student_id=student_id,password=password)
+                return Response(applicant.id,status=200)
         
-        return Response(status=201)
+        return Response(user.id,status=201)
     # request에서 이름, 패스워드 추출 실패 시
     except AttributeError: 
         return Response(status=404)

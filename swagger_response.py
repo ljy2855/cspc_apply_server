@@ -14,7 +14,7 @@ get_recuit_session_response = openapi.Responses(
 )
 
 get_resume_response = openapi.Responses(
-    responses={200: ResumeSerializer(), 400: "Error"}
+    responses={200: ResumeRequestSerializer(), 400: "Error"}
 )
 
 get_interview_response = openapi.Responses(
