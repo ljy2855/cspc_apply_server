@@ -29,7 +29,7 @@ class Recruitment(models.Model):
             self.process = RecruitProcess.FINAL
         elif now > self.announce_middle_time :
             self.process = RecruitProcess.MIDDLE
-        elif now > self.start_time :
+        elif now.date() > self.start_time :
             self.process = RecruitProcess.APPLY
         else :
             self.process = RecruitProcess.CLOSE
