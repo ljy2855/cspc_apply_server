@@ -1,5 +1,5 @@
 from django.db import models
-from datetime import datetime
+from django.utils import timezone
 from user.models import Applicant
 
 class TermType(models.TextChoices):
@@ -24,7 +24,7 @@ class Recruitment(models.Model):
     process = models.CharField(max_length=10, choices=RecruitProcess.choices ,default=RecruitProcess.CLOSE)
 
     def check_process(self):
-        now = datetime.now()
+        now = timezone.now()
         if now > self.announce_final_time :
             self.process = RecruitProcess.FINAL
         elif now > self.announce_middle_time :
