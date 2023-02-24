@@ -6,6 +6,9 @@ from django.db.models import Count
 import datetime
 
 
+from django.shortcuts import get_object_or_404
+
+
 @admin.action(description='csv 파일 다운로드')
 def get_all_resume(self, request, queryset):
     meta = self.model._meta
@@ -37,7 +40,7 @@ def set_interview_time(self, request, queryset): #self = resume model , queryset
                 s = Resume.objects.annotate()
                 for _resume in s: #resume에 대해 call하는 부분 문제 어떤방식으로 call해야하나?
                     if j.time==_resume.fixed_interview_time: time_num = time_num + 1
-                if time_num==1: #1개 있을 때
+                if time_num==1:
                     plus20 = j.time + datetime.timedelta(minutes=20)
                     a = Resume.objects.annotate()
                     for Res in a:
@@ -50,17 +53,22 @@ def set_interview_time(self, request, queryset): #self = resume model , queryset
                         times.remove(j.time)
                         break
                     
-                    else:
+                    else: #1개 있을
                         i.fixed_interview_time = plus20
                         i.save()
                         break
+                
                 else: # 0개일때
                     i.fixed_interview_time = j.time
                     i.save()
                     break
 
-
-
+@admin.action(description="면접 장소 일괄 지정")
+def set_interview_place(self,request,queryset):
+    place = get_object_or_404(InterviewPlace)
+    for query in queryset:
+        query.interview_place = place
+        query.save()
 
 @admin.register(Resume)
 class ResumeAdmin(admin.ModelAdmin):
@@ -74,7 +82,7 @@ class ResumeAdmin(admin.ModelAdmin):
 
 
 
-
+admin.site.register(InterviewPlace)
 admin.site.register(Recruitment)
 admin.site.register(InterviewTime)
 
