@@ -59,7 +59,7 @@ class Resume(models.Model):
     etc = models.TextField(default='')
 
     interview_time_choice = models.ManyToManyField(InterviewTime,related_name="interview_time")
-    fixed_interview_time = models.ForeignKey(InterviewTime,on_delete=models.CASCADE,null=True,blank=True)
+    fixed_interview_time = models.DateTimeField(null=True,blank=True)
     interview_requirement = models.TextField(default='')
     interview_place = models.ForeignKey(InterviewPlace,on_delete=models.CASCADE,null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
